@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --border: #222222;
+    --accent: #e8ff47;
+    --accent2: #ff6b35;
+    --text: #f0f0f0;
+    --muted: #666;
+    --card-bg: #141414;
+    --font-display: 'Syne', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: difference;
+  }
+
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.3s ease;
+    opacity: 0.5;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,10,0.9);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-logo {
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  nav ul {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  nav ul a {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  nav ul a:hover { color: var(--accent); }
+
+  .nav-cta {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.5rem 1.25rem;
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .nav-cta:hover {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+
+  section { min-height: 100vh; padding: 8rem 3rem 4rem; }
+
+  /* HERO */
+  #hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    padding-top: 10rem;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .badge-dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero-name {
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-name .line { display: block; overflow: hidden; }
+  .hero-name .line span {
+    display: block;
+    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform: translateY(100%);
+  }
+  .hero-name .line:nth-child(2) span { animation-delay: 0.1s; }
+  .hero-name .line:nth-child(3) span { animation-delay: 0.2s; }
+
+  @keyframes slideUp {
+    to { transform: translateY(0); }
+  }
+
+  .hero-name .accent { color: var(--accent); }
+
+  .hero-desc {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 380px;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-actions { display: flex; gap: 1rem; align-items: center; }
+
+  .btn-primary {
+    padding: 0.875rem 2rem;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { background: #d4eb2e; transform: translateY(-2px); }
+
+  .btn-ghost {
+    padding: 0.875rem 2rem;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-visual {
+    position: relative;
+    height: 500px;
+  }
+
+  .code-window {
+    position: absolute;
+    top: 0; right: 0;
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    overflow: hidden;
+    animation: fadeIn 1s 0.5s both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .window-bar {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #febc2e; }
+  .dot.g { background: #28c840; }
+
+  .file-name {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-left: auto;
+    letter-spacing: 0.05em;
+  }
+
+  .code-body { padding: 1.25rem; line-height: 2; }
+
+  .ln { color: #333; margin-right: 1.5rem; user-select: none; }
+  .kw { color: #ff6b9d; }
+  .fn { color: #79d4fb; }
+  .str { color: var(--accent); }
+  .cm { color: #555; font-style: italic; }
+  .obj { color: #ffa657; }
+  .num { color: #f1fa8c; }
+
+  .typing::after {
+    content: '|';
+    animation: blink 1s infinite;
+    color: var(--accent);
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .stats-bar {
+    position: absolute;
+    bottom: 0; left: 0;
+    right: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--border);
+    animation: fadeIn 1s 0.8s both;
+  }
+
+  .stat {
+    padding: 1.25rem;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-num {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    display: block;
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+    display: block;
+  }
+
+  /* ABOUT */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-num {
+    font-size: 6rem;
+    font-weight: 800;
+    color: var(--border);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .about-content h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-content p {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 1rem;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .skill-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .skill-tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(232, 255, 71, 0.03);
+  }
+
+  .skill-tag::before {
+    content: '▸';
+    color: var(--accent);
+    font-size: 0.65rem;
+  }
+
+  /* PROJECTS */
+  #projects { min-height: auto; padding-bottom: 6rem; }
+
+  .projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+  }
+
+  .projects-header h2 {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .project-card {
+    background: var(--bg);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .project-card:hover { background: var(--card-bg); }
+
+  .project-card.featured {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  .project-num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .tag.featured-tag {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(232, 255, 71, 0.05);
+  }
+
+  .project-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+
+  .project-desc {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-link {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: gap 0.2s;
+  }
+
+  .project-link:hover { gap: 1rem; }
+
+  .project-preview {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .preview-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.4;
+  }
+
+  .preview-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .preview-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .preview-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* STACK */
+  #stack { min-height: auto; padding: 4rem 3rem 6rem; }
+
+  .stack-header { margin-bottom: 3rem; }
+  .stack-header h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.04em; }
+
+  .stack-categories {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .stack-category {
+    background: var(--bg);
+    padding: 2rem;
+  }
+
+  .category-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stack-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .stack-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .stack-level {
+    display: flex;
+    gap: 3px;
+  }
+
+  .level-dot {
+    width: 6px; height: 6px;
+    background: var(--border);
+    border-radius: 50%;
+  }
+
+  .level-dot.active { background: var(--accent); }
+
+  /* CONTACT */
+  #contact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    min-height: 70vh;
+  }
+
+  .contact-left h2 {
+    font-size: 4rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+    margin-bottom: 2rem;
+  }
+
+  .contact-left h2 .accent { color: var(--accent); display: block; }
+
+  .contact-left p {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.9;
+    max-width: 400px;
+  }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+  .form-group label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 0.875rem 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus { border-color: var(--accent); }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: var(--muted); }
+
+  .form-submit {
+    padding: 1rem 2rem;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    align-self: flex-start;
+  }
+
+  .form-submit:hover { background: #d4eb2e; transform: translateY(-2px); }
+
+  .social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .social-link {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .social-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .scroll-indicator {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 50;
+  }
+
+  .scroll-text {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--muted);
+    writing-mode: vertical-rl;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--accent);
+    animation: scrollAnim 2s infinite;
+  }
+
+  @keyframes scrollAnim {
+    to { top: 200%; }
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    #hero, #about, #contact { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
+    .stack-categories { grid-template-columns: repeat(2, 1fr); }
+    section { padding: 4rem 1.5rem 3rem; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
+    nav ul { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<nav>
+  <a href="#hero" class="nav-logo">KDJ<span>.</span></a>
+  <ul>
+    <li><a href="#about">소개</a></li>
+    <li><a href="#projects">프로젝트</a></li>
+    <li><a href="#stack">기술스택</a></li>
+    <li><a href="#contact">연락</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire Me</a>
+</nav>
+
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      현재 프리랜서 모집 중
+    </div>
+    <h1 class="hero-name">
+      <span class="line"><span>풀스택</span></span>
+      <span class="line"><span>웹 개발자</span></span>
+      <span class="line"><span class="accent">김동준.</span></span>
+    </h1>
+    <p class="hero-desc">
+      React · Node.js · PostgreSQL을 주력으로<br>
+      서비스 기획부터 배포까지 전 과정을 담당합니다.<br>
+      클린 코드와 사용자 경험을 최우선으로 생각합니다.
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">프로젝트 보기 →</a>
+      <a href="#contact" class="btn-ghost">연락하기</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="code-window">
+      <div class="window-bar">
+        <span class="dot r"></span>
+        <span class="dot y"></span>
+        <span class="dot g"></span>
+        <span class="file-name">portfolio.ts</span>
+      </div>
+      <div class="code-body">
+        <div><span class="ln">01</span><span class="kw">const</span> <span class="fn">developer</span> = {</div>
+        <div><span class="ln">02</span>  name: <span class="str">"김동준"</span>,</div>
+        <div><span class="ln">03</span>  role: <span class="str">"Fullstack Developer"</span>,</div>
+        <div><span class="ln">04</span>  experience: <span class="num">5</span>,</div>
+        <div><span class="ln">05</span>  stack: {</div>
+        <div><span class="ln">06</span>    frontend: [<span class="str">"React"</span>, <span class="str">"Next.js"</span>],</div>
+        <div><span class="ln">07</span>    backend: [<span class="str">"Node.js"</span>, <span class="str">"Go"</span>],</div>
+        <div><span class="ln">08</span>    db: [<span class="str">"PostgreSQL"</span>, <span class="str">"Redis"</span>],</div>
+        <div><span class="ln">09</span>  },</div>
+        <div><span class="ln">10</span>  <span class="obj">available</span>: <span class="kw">true</span>, <span class="cm">// 2025.04~</span></div>
+        <div><span class="ln">11</span>};</div>
+        <div><span class="ln">12</span></div>
+        <div><span class="ln">13</span><span class="kw">export default</span> <span class="fn typing">developer</span></div>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat">
+        <span class="stat-num">5+</span>
+        <span class="stat-label">Years Exp</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">32</span>
+        <span class="stat-label">Projects</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">18</span>
+        <span class="stat-label">Clients</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="about-left">
+    <div class="section-num">01</div>
+  </div>
+  <div class="about-content">
+    <p class="section-label">About Me</p>
+    <h2>코드로 아이디어를<br>현실로 만듭니다.</h2>
+    <p>
+      5년간 스타트업과 에이전시를 거치며 다양한 규모의 프로젝트를
+      리드해왔습니다. 사용자 중심의 인터페이스 설계부터 안정적인
+      서버 아키텍처 구축까지, 제품의 전체 생애주기를 이해합니다.
+    </p>
+    <p>
+      좋은 코드는 잘 작동하는 것을 넘어 유지보수가 용이하고
+      팀원이 이해하기 쉬워야 한다고 믿습니다.
+      테스트, 문서화, 코드 리뷰를 개발 문화의 핵심으로 삼습니다.
+    </p>
+    <div class="skills-grid">
+      <span class="skill-tag">React / Next.js</span>
+      <span class="skill-tag">TypeScript</span>
+      <span class="skill-tag">Node.js / Express</span>
+      <span class="skill-tag">Go</span>
+      <span class="skill-tag">PostgreSQL</span>
+      <span class="skill-tag">Redis</span>
+      <span class="skill-tag">Docker / K8s</span>
+      <span class="skill-tag">AWS / GCP</span>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="projects-header">
+    <div>
+      <p class="section-label">Work</p>
+      <h2>선택된<br>프로젝트들.</h2>
+    </div>
+    <a href="#" class="btn-ghost">전체 보기 →</a>
+  </div>
+
+  <div class="projects-grid">
+    <div class="project-card featured">
+      <div class="project-info">
+        <p class="project-num">01 — FEATURED</p>
+        <div class="project-tags">
+          <span class="tag featured-tag">Next.js</span>
+          <span class="tag featured-tag">PostgreSQL</span>
+          <span class="tag">AWS</span>
+          <span class="tag">Stripe</span>
+        </div>
+        <h3 class="project-title">SaaS 구독 관리<br>플랫폼</h3>
+        <p class="project-desc">
+          B2B 구독 관리 솔루션. 실시간 사용량 추적, 자동 청구,
+          역할 기반 권한 시스템을 갖춘 멀티테넌트 아키텍처.
+          현재 월 5만 MAU 운영 중.
+        </p>
+        <a href="#" class="project-link">Case Study →</a>
+      </div>
+      <div class="project-preview">
+        <div class="preview-grid"></div>
+        <div class="preview-content">
+          <span class="preview-icon">📊</span>
+          <span class="preview-label">Dashboard Preview</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <p class="project-num">02</p>
+      <div class="project-tags">
+        <span class="tag">React</span>
+        <span class="tag">Go</span>
+        <span class="tag">WebSocket</span>
+      </div>
+      <h3 class="project-title">실시간 협업<br>도구</h3>
+      <p class="project-desc">
+        Notion 스타일의 실시간 문서 편집기.
+        CRDT 알고리즘으로 충돌 없는 동시 편집 구현.
+      </p>
+      <a href="#" class="project-link">보기 →</a>
+    </div>
+
+    <div class="project-card">
+      <p class="project-num">03</p>
+      <div class="project-tags">
+        <span class="tag">Next.js</span>
+        <span class="tag">OpenAI</span>
+        <span class="tag">Redis</span>
+      </div>
+      <h3 class="project-title">AI 콘텐츠<br>생성 툴</h3>
+      <p class="project-desc">
+        마케터를 위한 GPT-4 기반 카피라이팅 도구.
+        스트리밍 응답과 히스토리 관리 기능 포함.
+      </p>
+      <a href="#" class="project-link">보기 →</a>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="stack-header">
+    <p class="section-label">Tech Stack</p>
+    <h2>기술 스택</h2>
+  </div>
+  <div class="stack-categories">
+    <div class="stack-category">
+      <p class="category-label">Frontend</p>
+      <div class="stack-items">
+        <div class="stack-item">
+          <span>React / Next.js</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+          </div>
+        </div>
+        <div class="stack-item">
+          <span>TypeScript</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+          </div>
+        </div>
+        <div class="stack-item">
+          <span>Tailwind CSS</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot"></div>
+          </div>
+        </div>
+        <div class="stack-item">
+          <span>Vue.js</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot"></div>
+            <div class="level-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack-category">
+      <p class="category-label">Backend</p>
+      <div class="stack-items">
+        <div class="stack-item">
+          <span>Node.js</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+          </div>
+        </div>
+        <div class="stack-item">
+          <span>Go</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot"></div>
+          </div>
+        </div>
+        <div class="stack-item">
+          <span>GraphQL</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot"></div>
+          </div>
+        </div>
+        <div class="stack-item">
+          <span>Python</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot"></div>
+            <div class="level-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack-category">
+      <p class="category-label">Database</p>
+      <div class="stack-items">
+        <div class="stack-item">
+          <span>PostgreSQL</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+          </div>
+        </div>
+        <div class="stack-item">
+          <span>Redis</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot"></div>
+          </div>
+        </div>
+        <div class="stack-item">
+          <span>MongoDB</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot"></div>
+            <div class="level-dot"></div>
+          </div>
+        </div>
+        <div class="stack-item">
+          <span>Elasticsearch</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot"></div>
+            <div class="level-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack-category">
+      <p class="category-label">DevOps</p>
+      <div class="stack-items">
+        <div class="stack-item">
+          <span>Docker / K8s</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot"></div>
+          </div>
+        </div>
+        <div class="stack-item">
+          <span>AWS</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot"></div>
+          </div>
+        </div>
+        <div class="stack-item">
+          <span>GitHub Actions</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot"></div>
+          </div>
+        </div>
+        <div class="stack-item">
+          <span>Terraform</span>
+          <div class="stack-level">
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot active"></div>
+            <div class="level-dot"></div>
+            <div class="level-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-left">
+    <p class="section-label">Contact</p>
+    <h2>
+      같이 일해<br>볼까요?
+      <span class="accent">연락주세요.</span>
+    </h2>
+    <p>
+      프리랜서 프로젝트, 풀타임 포지션, 기술 자문 모두 열려 있습니다.
+      아이디어가 있다면 편하게 이야기 나눠요.
+    </p>
+    <div class="social-links">
+      <a href="#" class="social-link">GitHub</a>
+      <a href="#" class="social-link">LinkedIn</a>
+      <a href="#" class="social-link">Twitter</a>
+    </div>
+  </div>
+
+  <form class="contact-form" onsubmit="handleSubmit(event)">
+    <div class="form-group">
+      <label>이름</label>
+      <input type="text" placeholder="홍길동" />
+    </div>
+    <div class="form-group">
+      <label>이메일</label>
+      <input type="email" placeholder="hello@example.com" />
+    </div>
+    <div class="form-group">
+      <label>프로젝트 유형</label>
+      <input type="text" placeholder="웹 앱 개발 / 기술 자문 / 풀타임..." />
+    </div>
+    <div class="form-group">
+      <label>메시지</label>
+      <textarea rows="5" placeholder="프로젝트에 대해 간단히 설명해주세요..."></textarea>
+    </div>
+    <button type="submit" class="form-submit">메시지 보내기 →</button>
+  </form>
+</section>
+
+<footer>
+  <p>© 2025 김동준. All rights reserved.</p>
+  <p>Designed & Built with ♥</p>
+  <p>Seoul, Korea</p>
+</footer>
+
+<div class="scroll-indicator">
+  <span class="scroll-text">scroll</span>
+  <div class="scroll-line"></div>
+</div>
+
+<script>
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = (mx - 6) + 'px';
+  cursor.style.top = (my - 6) + 'px';
+});
+
+function animRing() {
+  rx += (mx - rx - 18) * 0.15;
+  ry += (my - ry - 18) * 0.15;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.transform = 'scale(2.5)';
+    ring.style.transform = 'scale(1.5)';
+    ring.style.opacity = '0.2';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.transform = 'scale(1)';
+    ring.style.transform = 'scale(1)';
+    ring.style.opacity = '0.5';
+  });
+});
+
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = '전송 완료! ✓';
+  btn.style.background = '#4ade80';
+  setTimeout(() => {
+    btn.textContent = '메시지 보내기 →';
+    btn.style.background = '';
+    e.target.reset();
+  }, 3000);
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.project-card, .stack-category, .about-content').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(30px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
