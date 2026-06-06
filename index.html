@@ -163,9 +163,8 @@
   }
   .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
-  .hero-visual { position: relative; min-height: 460px; }
+  .hero-visual { display: flex; flex-direction: column; gap: 1.5rem; }
   .code-window {
-    position: absolute; top: 0; right: 0; left: 0;
     background: var(--surface); border: 1px solid var(--border);
     font-family: var(--font-mono); font-size: 0.78rem; overflow: hidden;
     opacity: 1;                            /* visible base state */
@@ -184,7 +183,6 @@
   @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 
   .stats-bar {
-    position: absolute; bottom: 0; left: 0; right: 0;
     display: grid; grid-template-columns: repeat(3, 1fr);
     border-top: 1px solid var(--border);
     opacity: 1;                            /* visible base state */
@@ -196,7 +194,7 @@
   .stat-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.25rem; display: block; }
 
   /* ---------- ABOUT ---------- */
-  #about { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; align-items: start; }
+  #about { display: block; max-width: 920px; }
   .section-label {
     font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent);
     letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem;
@@ -431,9 +429,6 @@
 </section>
 
 <section id="about">
-  <div class="about-left">
-    <div class="section-num">01</div>
-  </div>
   <div class="about-content">
     <p class="section-label">About Me</p>
     <h2>구조를 이해하고<br>끝까지 파고듭니다.</h2>
