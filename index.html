@@ -240,6 +240,25 @@
   .project-desc li { padding-left: 1.1rem; position: relative; }
   .project-desc li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
 
+  .project-meta {
+    font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted);
+    line-height: 1.7; margin-bottom: 1.25rem; padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .project-meta strong { color: var(--text); font-weight: 500; }
+
+  .trouble-block {
+    font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted);
+    line-height: 1.8; padding: 1rem 1.1rem; border: 1px solid var(--border);
+    background: var(--surface); margin-bottom: 1.75rem;
+  }
+  .trouble-block .trouble-label {
+    display: block; color: var(--accent2); font-size: 0.7rem;
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem;
+  }
+
+  .project-card.full { grid-column: span 2; }
+
   .project-link {
     font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);
     text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase;
@@ -413,7 +432,7 @@
 
     <div class="stats-bar">
       <div class="stat">
-        <span class="stat-num">2</span>
+        <span class="stat-num">3</span>
         <span class="stat-label">Projects</span>
       </div>
       <div class="stat">
@@ -467,7 +486,7 @@
   <div class="projects-grid">
     <div class="project-card featured">
       <div class="project-info">
-        <p class="project-num">02 — FEATURED</p>
+        <p class="project-num">01 — FEATURED</p>
         <div class="project-tags">
           <span class="tag featured-tag">Spring Boot</span>
           <span class="tag featured-tag">Spring AI</span>
@@ -477,6 +496,7 @@
           <span class="tag">Spring Batch</span>
         </div>
         <h3 class="project-title">CineOS<br>영화관 키오스크</h3>
+        <p class="project-meta">기간: <strong>2026.03 ~ 2026.05 (2개월)</strong> · 인원: <strong>4명</strong><br>담당: 백엔드 개발(Spring AI, Security, JPA) 및 AWS 배포</p>
         <ul class="project-desc">
           <li>Spring Boot + React 기반 영화관 무인 키오스크 풀스택 웹 애플리케이션 (팀원 4명)</li>
           <li>JWT 이중 저장 구조(AccessToken 메모리 / RefreshToken HttpOnly Cookie+DB)로 XSS·CSRF 개선</li>
@@ -485,6 +505,10 @@
           <li>Spring Batch로 일별 통계 집계 및 장기 미활동 회원 자동화</li>
           <li>AWS EC2 + GitHub Actions CI/CD 자동 배포</li>
         </ul>
+        <div class="trouble-block">
+          <span class="trouble-label">트러블슈팅</span>
+          JWT를 AccessToken·RefreshToken을 같은 저장소에 두는 방식으로 알고 있었으나, 두 토큰을 함께 저장하면 XSS로 동시 탈취될 수 있다는 문제를 확인. AccessToken은 메모리(ViewData), RefreshToken은 HttpOnly Cookie+DB로 분리 저장해 탈취 위험과 서버 강제 만료 두 가지를 모두 확보.
+        </div>
         <a href="https://github.com/vcg258" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
       </div>
       <div class="project-preview">
@@ -505,34 +529,55 @@
       </div>
     </div>
 
-    <div class="project-card">
-      <p class="project-num">01</p>
+    <div class="project-card featured">
+      <div class="project-info">
+        <p class="project-num">02 — FEATURED</p>
+        <div class="project-tags">
+          <span class="tag featured-tag">Spring AI</span>
+          <span class="tag featured-tag">WebSocket STOMP</span>
+          <span class="tag featured-tag">Session+OAuth2</span>
+          <span class="tag">Flyway</span>
+        </div>
+        <h3 class="project-title">world-tale-talk<br>LLM 인터랙티브 스토리텔링</h3>
+        <p class="project-meta">기간: <strong>2026.05.30 ~ 2026.07 (1개월 반)</strong> · 인원: <strong>2명</strong><br>담당: 백엔드 전체 설계·구현(Security, WebSocket, Spring AI RAG, Batch)</p>
+        <ul class="project-desc">
+          <li>LLM이 생성하는 서사를 자유 입력/선택지로 진행하는 인터랙티브 텍스트 스토리텔링 서비스</li>
+          <li>세계관 설정을 RAG(pgvector)로 임베딩해 매번 다른 전개와 맥락 유지를 동시에 확보</li>
+          <li>WebSocket(STOMP)으로 실시간 스토리 스트리밍을 구현</li>
+          <li>세션 기반 인증에 OAuth2 소셜 로그인을 연동</li>
+        </ul>
+        <div class="trouble-block">
+          <span class="trouble-label">트러블슈팅</span>
+          STOMP 메시지 핸들러에서 @AuthenticationPrincipal로 회원 정보를 조회하면 null이 반환되는 문제 발생. WebSocket STOMP 파이프라인은 일반 MVC와 달리 인증 정보를 스레드로 옮겨주는 인터셉터가 자동 등록되지 않는 게 원인이었음. WebSocketConfig에 인증 리졸버와 SecurityContextChannelInterceptor를 직접 등록해 해결, 이후 정상적으로 인증된 사용자 정보를 받아 처리하는 것을 확인.
+        </div>
+        <a href="https://github.com/vcg258" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
+      </div>
+      <div class="project-preview">
+        <div class="preview-grid"></div>
+        <div class="preview-code">
+          <div class="cm">// STOMP auth interceptor</div>
+          <div><span class="kw">registry</span><span>.setInterceptors(</span></div>
+          <div>&nbsp;&nbsp;<span class="kw">new</span> <span class="obj">SecurityContextChannelInterceptor</span>());</div>
+          <div class="cm" style="margin-top: 0.5rem;">// RAG로 세계관 임베딩</div>
+          <div><span class="kw">return</span> <span class="obj">vectorStore</span></div>
+          <div>&nbsp;&nbsp;<span class="fn">.similaritySearch</span><span>(query);</span><span class="caret">|</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card full">
+      <p class="project-num">03</p>
       <div class="project-tags">
         <span class="tag">Servlet / JSP</span>
         <span class="tag">MariaDB</span>
         <span class="tag">SMTP OTP</span>
         <span class="tag">NCS + Jenkins</span>
       </div>
-      <h3 class="project-title">웹 스마트<br>주차관리 시스템</h3>
+      <h3 class="project-title">웹 스마트 주차관리 시스템</h3>
+      <p class="project-meta">기간: <strong>2026.01.21 ~ 2026.02.21 (1개월)</strong> · 인원: <strong>5명</strong> · 담당: <strong>관리자 로그인</strong></p>
       <ul class="project-desc">
-        <li>MVC 패턴 기반 웹 주차관리 시스템 (팀원 5명)</li>
-        <li>관리자 3단계 보안 로그인(아이디/비밀번호 → 이메일 인증 → SMTP OTP) 설계·구현</li>
-        <li>UUID 기반 임시 비밀번호 발급 + 최초 로그인 플래그로 강제 변경 유도</li>
-        <li>NCS + Jenkins를 활용한 배포 경험</li>
-      </ul>
-      <a href="https://github.com/vcg258" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
-    </div>
-
-    <div class="project-card">
-      <p class="project-num">03</p>
-      <div class="project-tags">
-        <span class="tag">Python</span>
-        <span class="tag">데이터 분석</span>
-      </div>
-      <h3 class="project-title">Python<br>데이터 분석</h3>
-      <ul class="project-desc">
-        <li>교육 과정 중 Python을 활용한 데이터 전처리 및 분석</li>
-        <li>통계 기반 분석 모델 구현 실습</li>
+        <li>Servlet/JSP 기반 MVC 구조로 구현한 첫 팀 프로젝트</li>
+        <li>관리자 3단계 보안 로그인(아이디·비밀번호 → 이메일 인증 → OTP)을 설계·구현</li>
       </ul>
       <a href="https://github.com/vcg258" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
     </div>
@@ -630,7 +675,7 @@
 <footer>
   <p>© 2026 김준용. All rights reserved.</p>
   <p>Designed &amp; Built with ♥</p>
-  <p>Daegu, Korea</p>
+  <p>Seoul, Korea</p>
 </footer>
 
 <div class="scroll-indicator">
