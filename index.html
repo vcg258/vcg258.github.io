@@ -265,6 +265,7 @@
     display: inline-flex; align-items: center; gap: 0.5rem; transition: gap 0.2s;
   }
   .project-link:hover { gap: 1rem; }
+  .project-links { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; }
   .project-preview {
     background: var(--surface); border: 1px solid var(--border);
     min-height: 260px; position: relative; overflow: hidden;
@@ -509,7 +510,10 @@
           <span class="trouble-label">트러블슈팅</span>
           JWT를 AccessToken·RefreshToken을 같은 저장소에 두는 방식으로 알고 있었으나, 두 토큰을 함께 저장하면 XSS로 동시 탈취될 수 있다는 문제를 확인. AccessToken은 메모리(ViewData), RefreshToken은 HttpOnly Cookie+DB로 분리 저장해 탈취 위험과 서버 강제 만료 두 가지를 모두 확보.
         </div>
-        <a href="https://github.com/vcg258" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
+        <div class="project-links">
+          <a href="https://cineos-view.duckdns.org/" class="project-link" target="_blank" rel="noreferrer">Live Demo →</a>
+          <a href="https://github.com/vcg258" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
+        </div>
       </div>
       <div class="project-preview">
         <div class="preview-grid"></div>
@@ -550,7 +554,10 @@
           <span class="trouble-label">트러블슈팅</span>
           STOMP 메시지 핸들러에서 @AuthenticationPrincipal로 회원 정보를 조회하면 null이 반환되는 문제 발생. WebSocket STOMP 파이프라인은 일반 MVC와 달리 인증 정보를 스레드로 옮겨주는 인터셉터가 자동 등록되지 않는 게 원인이었음. WebSocketConfig에 인증 리졸버와 SecurityContextChannelInterceptor를 직접 등록해 해결, 이후 정상적으로 인증된 사용자 정보를 받아 처리하는 것을 확인.
         </div>
-        <a href="https://github.com/vcg258" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
+        <div class="project-links">
+          <a href="http://World-tale-talk-env.eba-qevfpafv.ap-northeast-2.elasticbeanstalk.com" class="project-link" target="_blank" rel="noreferrer">Live Demo →</a>
+          <a href="https://github.com/vcg258" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
+        </div>
       </div>
       <div class="project-preview">
         <div class="preview-grid"></div>
@@ -579,7 +586,10 @@
         <li>Servlet/JSP 기반 MVC 구조로 구현한 첫 팀 프로젝트</li>
         <li>관리자 3단계 보안 로그인(아이디·비밀번호 → 이메일 인증 → OTP)을 설계·구현</li>
       </ul>
-      <a href="https://github.com/vcg258" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
+      <div class="project-links">
+        <a href="#" class="project-link" target="_blank" rel="noreferrer">Live Demo →</a>
+        <a href="https://github.com/vcg258" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
+      </div>
     </div>
   </div>
 </section>
