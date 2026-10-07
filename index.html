@@ -265,7 +265,15 @@
     display: inline-flex; align-items: center; gap: 0.5rem; transition: gap 0.2s;
   }
   .project-link:hover { gap: 1rem; }
-  .project-links { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; }
+  .project-link--demo {
+    background: var(--accent); color: var(--bg); padding: 0.6rem 1.1rem;
+    border: 1px solid var(--accent);
+  }
+  .project-link--demo:hover {
+    background: var(--accent-hover); border-color: var(--accent-hover); color: var(--bg);
+    transform: translateY(-2px);
+  }
+  .project-links { display: flex; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 0.75rem; }
   .project-preview {
     background: var(--surface); border: 1px solid var(--border);
     min-height: 260px; position: relative; overflow: hidden;
@@ -492,7 +500,7 @@
           <span class="tag featured-tag">Spring Boot</span>
           <span class="tag featured-tag">Spring AI</span>
           <span class="tag featured-tag">JWT</span>
-          <span class="tag">AWS EC2</span>
+          <span class="tag">AWS EC2 → Oracle Cloud</span>
           <span class="tag">WebSocket</span>
           <span class="tag">Spring Batch</span>
         </div>
@@ -504,14 +512,14 @@
           <li>MariaDB + PostgreSQL pgvector 이중 DataSource 환경 직접 구성</li>
           <li>Spring AI ETL 파이프라인 + RAG 기반 직원 교육 챗봇 구현</li>
           <li>Spring Batch로 일별 통계 집계 및 장기 미활동 회원 자동화</li>
-          <li>AWS EC2 + GitHub Actions CI/CD 자동 배포</li>
+          <li>AWS EC2 + GitHub Actions CI/CD 자동 배포 (현재 Oracle Cloud로 마이그레이션 중)</li>
         </ul>
         <div class="trouble-block">
           <span class="trouble-label">트러블슈팅</span>
           JWT를 AccessToken·RefreshToken을 같은 저장소에 두는 방식으로 알고 있었으나, 두 토큰을 함께 저장하면 XSS로 동시 탈취될 수 있다는 문제를 확인. AccessToken은 메모리(ViewData), RefreshToken은 HttpOnly Cookie+DB로 분리 저장해 탈취 위험과 서버 강제 만료 두 가지를 모두 확보.
         </div>
         <div class="project-links">
-          <a href="https://cineos-view.duckdns.org/" class="project-link" target="_blank" rel="noreferrer">Live Demo →</a>
+          <a href="https://cineos-view.duckdns.org/" class="project-link project-link--demo" target="_blank" rel="noreferrer" style="display:none;">Live Demo →</a>
           <a href="https://github.com/vcg258/cinemaKiOsk" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
         </div>
       </div>
@@ -541,7 +549,7 @@
           <span class="tag featured-tag">WebSocket STOMP</span>
           <span class="tag featured-tag">Session+OAuth2</span>
           <span class="tag">Flyway</span>
-          <span class="tag">AWS EB + GitHub Actions</span>
+          <span class="tag">AWS EB → Oracle Cloud</span>
         </div>
         <h3 class="project-title">world-tale-talk<br>LLM 인터랙티브 스토리텔링</h3>
         <p class="project-meta">기간: <strong>2026.05.30 ~ 2026.07 (1개월 반)</strong> · 인원: <strong>2명</strong><br>담당: <strong>백엔드 전체 설계·구현(Security, WebSocket, Spring AI RAG, Batch)</strong></p>
@@ -550,14 +558,14 @@
           <li>세계관 설정을 RAG(pgvector)로 임베딩해 매번 다른 전개와 맥락 유지를 동시에 확보</li>
           <li>WebSocket(STOMP)으로 실시간 스토리 스트리밍을 구현</li>
           <li>세션 기반 인증에 OAuth2 소셜 로그인을 연동</li>
-          <li>AWS Elastic Beanstalk + GitHub Actions CI/CD로 자동 배포</li>
+          <li>AWS Elastic Beanstalk + GitHub Actions CI/CD로 자동 배포 (현재 Oracle Cloud로 마이그레이션 중)</li>
         </ul>
         <div class="trouble-block">
           <span class="trouble-label">트러블슈팅</span>
           STOMP 메시지 핸들러에서 @AuthenticationPrincipal로 회원 정보를 조회하면 null이 반환되는 문제 발생. WebSocket STOMP 파이프라인은 일반 MVC와 달리 인증 정보를 스레드로 옮겨주는 인터셉터가 자동 등록되지 않는 게 원인이었음. WebSocketConfig에 인증 리졸버와 SecurityContextChannelInterceptor를 직접 등록해 해결, 이후 정상적으로 인증된 사용자 정보를 받아 처리하는 것을 확인.
         </div>
         <div class="project-links">
-          <a href="http://World-tale-talk-env.eba-qevfpafv.ap-northeast-2.elasticbeanstalk.com" class="project-link" target="_blank" rel="noreferrer">Live Demo →</a>
+          <a href="http://World-tale-talk-env.eba-qevfpafv.ap-northeast-2.elasticbeanstalk.com" class="project-link project-link--demo" target="_blank" rel="noreferrer" style="display:none;">Live Demo →</a>
           <a href="https://github.com/vcg258/world-tale-talk" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
         </div>
       </div>
@@ -580,7 +588,7 @@
         <span class="tag">Servlet / JSP</span>
         <span class="tag">MariaDB</span>
         <span class="tag">SMTP OTP</span>
-        <span class="tag">NCP + Jenkins</span>
+        <span class="tag">NCP → Oracle Cloud</span>
       </div>
       <h3 class="project-title">웹 스마트 주차관리 시스템</h3>
       <p class="project-meta">기간: <strong>2026.01.21 ~ 2026.02.21 (1개월)</strong> · 인원: <strong>5명</strong> · 담당: <strong>관리자 로그인</strong></p>
@@ -589,7 +597,7 @@
         <li>관리자 3단계 보안 로그인(아이디·비밀번호 → 이메일 인증 → OTP)을 설계·구현</li>
       </ul>
       <div class="project-links">
-        <a href="http://smart-parking-system.duckdns.org/" class="project-link" target="_blank" rel="noreferrer">Live Demo →</a>
+        <a href="http://smart-parking-system.duckdns.org/" class="project-link project-link--demo" target="_blank" rel="noreferrer" style="display:none;">Live Demo →</a>
         <a href="https://github.com/vcg258/smartparkingsystem" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
       </div>
     </div>
