@@ -277,7 +277,7 @@
   .project-preview {
     background: var(--surface); border: 1px solid var(--border);
     min-height: 260px; position: relative; overflow: hidden;
-    display: flex; align-items: stretch;
+    display: flex; align-items: stretch; align-self: stretch;
   }
   .preview-grid {
     position: absolute; inset: 0;
@@ -536,7 +536,22 @@
           <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="obj">QuestionAnswerAdvisor</span></div>
           <div>&nbsp;&nbsp;&nbsp;&nbsp;<span>(vectorStore))</span></div>
           <div>&nbsp;&nbsp;<span class="fn">.user(query)</span></div>
-          <div>&nbsp;&nbsp;<span class="fn">.call();</span><span class="caret">|</span></div>
+          <div>&nbsp;&nbsp;<span class="fn">.call();</span></div>
+          <div class="cm" style="margin-top: 0.5rem;">// RefreshToken → HttpOnly 쿠키 + DB 저장</div>
+          <div><span class="obj">ResponseCookie</span><span>.from(</span><span class="str">"refreshToken"</span><span>, refreshToken)</span></div>
+          <div>&nbsp;&nbsp;<span class="fn">.httpOnly</span><span>(true)</span></div>
+          <div>&nbsp;&nbsp;<span class="fn">.sameSite</span><span>(</span><span class="str">"Strict"</span><span>)</span></div>
+          <div>&nbsp;&nbsp;<span class="fn">.maxAge</span><span>(cookieMaxAge)</span></div>
+          <div>&nbsp;&nbsp;<span class="fn">.build</span><span>();</span></div>
+          <div><span class="obj">adminRoleService</span><span>.rememberMe(</span></div>
+          <div>&nbsp;&nbsp;<span>authentication.getName(), refreshToken);</span></div>
+          <div class="cm" style="margin-top: 0.5rem;">// MariaDB + PostgreSQL(pgvector) 이중 DataSource</div>
+          <div><span class="kw">@Primary</span></div>
+          <div><span class="kw">@Bean</span><span>(name = </span><span class="str">"mariaDB"</span><span>)</span></div>
+          <div><span>DataSource </span><span class="fn">mariaDataSource</span><span>() {</span></div>
+          <div>&nbsp;&nbsp;<span class="kw">return</span><span> mariaProperties()</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span>.initializeDataSourceBuilder().build();</span></div>
+          <div><span>}</span><span class="caret">|</span></div>
         </div>
       </div>
     </div>
@@ -577,29 +592,60 @@
           <div>&nbsp;&nbsp;<span class="kw">new</span> <span class="obj">SecurityContextChannelInterceptor</span>());</div>
           <div class="cm" style="margin-top: 0.5rem;">// RAG로 세계관 임베딩</div>
           <div><span class="kw">return</span> <span class="obj">vectorStore</span></div>
-          <div>&nbsp;&nbsp;<span class="fn">.similaritySearch</span><span>(query);</span><span class="caret">|</span></div>
+          <div>&nbsp;&nbsp;<span class="fn">.similaritySearch</span><span>(query);</span></div>
+          <div class="cm" style="margin-top: 0.5rem;">// 세션 대화 이력을 DB에서 조회 (최근 10개 윈도우)</div>
+          <div><span class="kw">private static final int</span><span> WINDOW_SIZE = </span><span class="num">10</span><span>;</span></div>
+          <div><span>PageRequest.of(0, WINDOW_SIZE,</span></div>
+          <div>&nbsp;&nbsp;<span>Sort.by(Sort.Direction.DESC, </span><span class="str">"createdAt"</span><span>));</span></div>
+          <div><span>Collections.reverse(chatMessages);</span></div>
+          <div class="cm" style="margin-top: 0.5rem;">// LLM 호출 실패 시 보상 트랜잭션</div>
+          <div><span class="obj">state</span><span>.turnDown();</span></div>
+          <div><span class="obj">sessionStatsService</span><span>.deleteStatLog(</span></div>
+          <div>&nbsp;&nbsp;<span>appliedStateLog.getId());</span><span class="caret">|</span></div>
         </div>
       </div>
     </div>
 
-    <div class="project-card full">
-      <p class="project-num">03</p>
-      <div class="project-tags">
-        <span class="tag">Servlet / JSP</span>
-        <span class="tag">MariaDB</span>
-        <span class="tag">SMTP OTP</span>
-        <span class="tag">NCP → Oracle Cloud</span>
+    <div class="project-card featured">
+      <div class="project-info">
+        <p class="project-num">03</p>
+        <div class="project-tags">
+          <span class="tag">Servlet / JSP</span>
+          <span class="tag">MariaDB</span>
+          <span class="tag">SMTP OTP</span>
+          <span class="tag">NCP → Oracle Cloud</span>
+        </div>
+        <h3 class="project-title">웹 스마트 주차관리 시스템</h3>
+        <p class="project-meta">기간: <strong>2026.01.21 ~ 2026.02.21 (1개월)</strong> · 인원: <strong>5명</strong> · 담당: <strong>관리자 로그인</strong></p>
+        <ul class="project-desc">
+          <li>Servlet/JSP 기반 MVC 구조로 구현한 첫 팀 프로젝트</li>
+          <li>관리자 3단계 보안 로그인(아이디·비밀번호 → 이메일 인증 → OTP)을 설계·구현</li>
+          <li>NCP + Jenkins CI/CD로 배포, 이후 Oracle Cloud로 이전하며 GitHub Actions 기반으로 전환</li>
+        </ul>
+        <div class="project-links">
+          <a href="https://smart-parking-system.duckdns.org/" class="project-link project-link--demo" target="_blank" rel="noreferrer">Live Demo →</a>
+          <a href="https://github.com/vcg258/smartparkingsystem" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
+        </div>
       </div>
-      <h3 class="project-title">웹 스마트 주차관리 시스템</h3>
-      <p class="project-meta">기간: <strong>2026.01.21 ~ 2026.02.21 (1개월)</strong> · 인원: <strong>5명</strong> · 담당: <strong>관리자 로그인</strong></p>
-      <ul class="project-desc">
-        <li>Servlet/JSP 기반 MVC 구조로 구현한 첫 팀 프로젝트</li>
-        <li>관리자 3단계 보안 로그인(아이디·비밀번호 → 이메일 인증 → OTP)을 설계·구현</li>
-        <li>NCP + Jenkins CI/CD로 배포, 이후 Oracle Cloud로 이전하며 GitHub Actions 기반으로 전환</li>
-      </ul>
-      <div class="project-links">
-        <a href="https://smart-parking-system.duckdns.org/" class="project-link project-link--demo" target="_blank" rel="noreferrer">Live Demo →</a>
-        <a href="https://github.com/vcg258/smartparkingsystem" class="project-link" target="_blank" rel="noreferrer">GitHub →</a>
+      <div class="project-preview">
+        <div class="preview-grid"></div>
+        <div class="preview-code">
+          <div class="cm">// 1단계: 아이디·비밀번호 확인 → 임시 세션</div>
+          <div><span class="kw">session</span><span>.setAttribute(</span></div>
+          <div>&nbsp;&nbsp;<span class="str">"tempAdminId"</span><span>, adminId);</span></div>
+          <div class="cm" style="margin-top: 0.5rem;">// 3단계: OTP 검증 성공 → 로그인 세션 전환</div>
+          <div><span class="kw">session</span><span>.setAttribute(</span><span class="str">"adminId"</span><span>, adminId);</span></div>
+          <div><span class="kw">session</span><span>.removeAttribute(</span></div>
+          <div>&nbsp;&nbsp;<span class="str">"tempAdminId"</span><span>);</span></div>
+          <div class="cm" style="margin-top: 0.5rem;">// 로그인 유지: UUID 쿠키 발급 + DB 저장</div>
+          <div><span>String uuid = </span><span class="obj">UUID</span><span>.randomUUID().toString();</span></div>
+          <div><span class="obj">adminService</span><span>.modifyUUID(adminDTO);</span></div>
+          <div><span>Cookie cookie = </span><span class="kw">new</span><span> Cookie(</span><span class="str">"rememberMe"</span><span>, uuid);</span></div>
+          <div><span>cookie.setMaxAge(</span><span class="num">60 * 30</span><span>);</span></div>
+          <div class="cm" style="margin-top: 0.5rem;">// OTP 검증 결과별 응답 코드</div>
+          <div><span class="kw">case</span><span> </span><span class="str">"Expired"</span><span> -&gt; resp.setStatus(SC_FORBIDDEN);</span></div>
+          <div><span class="kw">case</span><span> </span><span class="str">"Fail"</span><span> -&gt; resp.setStatus(SC_UNAUTHORIZED);</span><span class="caret">|</span></div>
+        </div>
       </div>
     </div>
   </div>
